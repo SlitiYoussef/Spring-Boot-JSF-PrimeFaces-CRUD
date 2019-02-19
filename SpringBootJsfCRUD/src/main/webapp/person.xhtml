@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<body>
+
+	<h3>Person List</h3>
+
+	<h:form id="frmPerson">
+
+		<p:dataTable value="#{personController.persons}" var="p" id="dtPerson">
+
+			<p:column filterBy="#{p.firstName}">
+				<f:facet name="header">Adı</f:facet>
+				#{p.firstName}
+			</p:column>
+
+			<p:column filterBy="#{p.lastName}">
+				<f:facet name="header">Soyadı</f:facet>
+				#{p.lastName}
+			</p:column>
+
+			<p:column filterBy="#{p.address}">
+				<f:facet name="header">Adres</f:facet>
+			#{p.address}
+		</p:column>
+
+			<p:column filterBy="#{p.phone}">
+				<f:facet name="header">Telefon</f:facet>
+			${p.phone}
+		</p:column>
+
+			<p:column filterBy="#{p.email}">
+				<f:facet name="header">E-Posta</f:facet>
+			#{p.email}
+		</p:column>
+
+			<p:column>
+				<f:facet name="header">İşlemler</f:facet>
+				<p:commandButton action="#{personController.personDelete(p)}"
+					value="Sil" update="@form"
+					onclick="return window.confirm('Silmek İstediğinizden Eminmisiniz ?')">
+					<p:ajax render="frmPerson" />
+				</p:commandButton>
+
+				<p:commandButton action="#{personController.selectUpdate(p)}"
+					value="Güncelle" update="@form">
+					<p:ajax render="frmPerson" />
+				</p:commandButton>
+
+			</p:column>
+
+		</p:dataTable>
+
+		<h:panelGrid columns="2" cellpadding="2" id="grdPerson">
+			<p:outputLabel value="Adı" />
+			<p:inputText value="#{personController.person.firstName}"></p:inputText>
+
+			<p:outputLabel value="Soyadı" />
+			<p:inputText value="#{personController.person.lastName}"></p:inputText>
+
+			<p:outputLabel value="Adres" />
+			<p:inputText value="#{personController.person.address}"></p:inputText>
+
+			<p:outputLabel value="Telefon" />
+			<p:inputText value="#{personController.person.phone}"></p:inputText>
+
+			<p:outputLabel value="E-Posta" />
+			<p:inputText value="#{personController.person.email}"></p:inputText>
+
+			<p:commandButton action="#{personController.PersonSave()}"
+				value="Kaydet" update="@form">
+				<p:ajax execute="frmPerson" render="dtPerson"></p:ajax>
+			</p:commandButton>
+
+			<h:panelGrid columns="2" cellpadding="5">
+				<p:commandButton action="#{personController.formClean()}"
+					value="Temizle" update="grdPerson"
+					rendered="#{personController.correction}" />
+			</h:panelGrid>
+			
+		</h:panelGrid>
+
+
+
+
+
+
+	</h:form>
+</body>
+</html>
